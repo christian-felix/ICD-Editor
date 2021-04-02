@@ -1,0 +1,293 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: cfelix
+ * Date: 17.07.2015
+ * Time: 10:53
+ */
+?>
+
+<head>
+ <div style="float:left; width:1270px; background-color: gray; border: solid 1px; ";>
+
+        Info
+ </div>
+
+</head>
+
+<div style="float:left; width:1250px; height:650px; background-color:grey; padding-left:20px; padding-top:20px; ">
+
+
+    <div style="float:left; width:350px"  >
+
+
+    <form action="save" method="GET">
+
+    <fieldset>
+    <div style="float:left; width: 140px; padding-top:5px;"> Element :   </div> <div style="float:left; width:120px; padding-top:5px; ">
+        <select name="element" id="elementType">
+            <option value="circleType">----</option>
+            <option value="rectType">Rechteck</option>
+            <option value="lineType">Line</option>
+        </select>
+    </div>
+    <div style="float:left; width: 140px; padding-top:5px;"> ICD : </div> <div style="float:left; width:120px; padding-top:5px;"> <input type="text" name="icd"  id="icd" value="S34" /> </div>
+    <div style="float:left; width: 140px; padding-top:5px;"> X1 :  </div> <div style="float:left; width:120px; padding-top:5px;"> <input type="text" name="xTotal" id="xTotal" /> </div>
+    <div style="float:left; width: 140px; padding-top:5px;"> Y1 :  </div> <div style="float:left; width:120px; padding-top:5px;"> <input type="text" name="yTotal" id="yTotal"/> </div>
+     <div style="display:none;" id="rectType" class="drawType">
+        <div style="float:left; width: 140px; padding-top:5px;"> Breite_Gesamt : </div> <div style="float:left; width:120px; padding-top:5px;"> <input type="text" name="widthTotal" id="widthTotal" /> </div>
+        <div style="float:left; width: 140px; padding-top:5px;"> Höhe_Gesamt :   </div><div style="float:left; width:120px; padding-top:5px;"> <input type="text" name="heightTotal" id="heightTotal"/> </div>
+     </div>
+    <div style="display:none;" id="circleType" class="drawType" >
+        <div style="float:left; width: 150px; padding-top:5px;">Radius</div> <div style="float:left; width:120px; padding-top:5px;"> <input type="text" name="radius" id="radius"/> </div>
+    </div>
+    <div style="display:none" id="lineType" class="drawType">
+        <div style="float:left; width: 150px; padding-top:5px;"> X2 : </div> <div style="float:left; width:120px; padding-top:5px;"> <input type="text" name="x2" id="widthTotal" /> </div>
+        <div style="float:left; width: 150px; padding-top:5px;"> Y2 : </div> <div style="float:left; width:120px; padding-top:5px;"> <input type="text" name="y2" id="heightTotal"/> </div>
+    </div>
+    <div style="float:left; width: 140px; padding-top:5px;"> img_detail :    </div> <div style="float:left; width:120px; padding-top:5px;">
+        <select name="image" id="selectImage">
+            <option value=""></option>
+            <?php foreach($images as $img){ ?>
+                <option value="<?=$img?>" ><?=$img?></option>
+            <?php } ?>
+         </select>
+    </div>
+    <div style="display:none;" id="detailImage">
+        <div style="float:left; width: 140px; padding-top:5px;"> x_Detail :      </div> <div style="float:left; width:120px; padding-top:5px;"> <input type="text" name="xDetail"       id="xDetail" /> </div>
+        <div style="float:left; width: 140px; padding-top:5px;"> y_Detail :      </div> <div style="float:left; width:120px; padding-top:5px;"> <input type="text" name="yDetail"       id="yDetail"  /> </div>
+        <div style="float:left; width: 140px; padding-top:5px;"> Breite_Detail : </div> <div style="float:left; width:120px; padding-top:5px;"> <input type="text" name="widthDetail"   id="widthDetail"  /> </div>
+        <div style="float:left; width: 140px; padding-top:5px;"> Höhe_Detail :   </div> <div style="float:left; width:120px; padding-top:5px;"> <input type="text" name="heightDetail"  id="heightDetail" /> </div>
+    </div>
+    <div style="padding-top:40px; padding-right:40px; float:right;">
+        <input type="submit" value="Speichern" />
+    </div>
+    </fieldset>
+    </form>
+
+        <div style="float:left;">
+            <input type="text" value="test" id="icd_description_1" />
+        </div>
+
+
+        <div style="float:left; position: absolute; top:550px; ">
+            <fieldset>
+                <legend> Aktionen</legend>
+            <input type="button" name="preview" value="Ansicht Testen"  onClick="preview(); return false;"; />
+            <input type="button" name="pdfPreview" value="Pdf Download"  onClick="generatePDF(); return false;"; />
+            <input type="button" name="refreshContent" value="reload PDF"  id="reloadEmbeddedPDF" />
+            </fieldset>
+
+            <fieldset>
+                <legend> Unfall-Bericht</legend>
+                <input type="button" name="generatePDF"  value="Unfallbericht erstellen" id="generateUnfallBericht" />
+            </fieldset>
+        </div>
+
+    </div>
+
+    <div style="float:left; padding-left:10px; width:850px;">
+        <div id="embeddedDetailPDFDocument">
+        </div>
+        <div id="embeddedPDFDocument">
+        </div>
+    </div>
+
+</div>
+
+
+<footer style="background-color: gray; float:left;width:1270px; border: solid 1px;">
+    <div style="float:right;">
+        <img src="../images/actineo.jpg" style="width:150px;" />
+    </div>
+    <div style="color:green;font-style:italic; ">Powered by @Actineo 2015 </div>
+</footer>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<script type="text/javascript">
+
+    var sel = document.getElementById('selectImage');
+    sel.onchange = function() {
+
+        var show = document.getElementById('showImage');
+        var img  = "<img src='../images/XXXX' />";
+
+        //show.innerHTML = img.replace('XXXX', this.value);
+        document.getElementById('detailImage').style.display = "block";
+    }
+
+    var drawType = document.getElementById('elementType');
+    drawType.onchange = function(){
+        document.getElementById('circleType').style.display = "none";
+        document.getElementById('rectType').style.display = "none";
+        document.getElementById('lineType').style.display = "none";
+        document.getElementById(drawType.value).style.display = "block";
+    }
+
+    /**
+     *  JQuery Funktionen
+     **/
+    $(document).ready(function() {
+
+        /**
+         *  ICD Autocomplete
+         */
+        $("#icd").autocomplete({
+            source :  function(request, response) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost.unfalleditor/editor/icds/"+request.term,
+                    dataType: "json",
+                    error: function(xhr, textStatus, errorThrown) {
+                        alert('Error: ' + xhr.responseText);
+                    },
+                    success: function(data) {
+                        response($.map(data, function(c) {
+                            //$.("#icd_description").html(c.icd_description_1);
+                            return {
+                                //label: c.icd
+                                value: c.icd
+                            }
+                        }));
+
+                    }
+                });
+            }
+        });
+
+        /**
+         *  Gesamt und Detailansicht aktualisieren
+         */
+        $("#reloadEmbeddedPDF").click(function(){
+
+            $.ajax({
+                url: "http://localhost.unfalleditor/editor/preview",
+                type: "GET",
+                //dataType: "json",
+                async: false,
+                success: function(data) {
+                    $("#embeddedPDFDocument").html(data);
+                }
+            });
+
+            $.ajax({
+                url: "http://localhost.unfalleditor/editor/detailPreview",
+                type: "GET",
+                //dataType: "json",
+                async: false,
+                success: function(data){
+                    $("#embeddedDetailPDFDocument").html(data);
+                }
+            });
+        });
+
+        /**
+         *  Unfallbericht erstellen
+         */
+        $("#generateUnfallBericht").click(function(){
+
+            $.ajax({
+                url: "http://localhost.unfalleditor/editor/generateAccidentReport",
+                type: "POST",
+                async: true,
+                success: function(data){
+                    alert(" Unfall-Bericht wurde erstellt!");
+                },
+                failure: function(xhr,error, type){
+                    alert("Fehler bei generierung des Unfallberichts "+error);
+                }
+            })
+        });
+    });
+
+</script>
+
+
+<script>
+/*var canvas = document.getElementById("myCanvas");
+var context = canvas.getContext('2d');
+
+function drawbackground(canvas, context, onload, xPosTotal, yPosTotal, totalWidth, totalHeight){
+
+var imagePaper = new Image();
+imagePaper.onload = function(){
+onload(canvas, context, xPosTotal, yPosTotal, totalWidth, totalHeight);
+};
+imagePaper.src = "../images/V_Gesamt.png";
+}
+
+function drawlines(canvas, context, xPosTotal, yPosTotal, totalWidth, totalHeight){
+
+//TOP
+context.beginPath();
+context.moveTo(xPosTotal, yPosTotal);
+context.lineTo(xPosTotal + totalWidth, yPosTotal);
+context.lineWidth = 1;
+context.strokeStyle = "black";
+context.stroke();
+
+//BOTTOM
+context.beginPath();
+context.moveTo(xPosTotal, yPosTotal+totalHeight);
+context.lineTo(xPosTotal + totalWidth, yPosTotal+totalHeight );
+context.lineWidth = 1;
+context.strokeStyle = "black";
+context.stroke();
+
+//LEFT
+context.beginPath();
+context.moveTo(xPosTotal, yPosTotal);
+context.lineTo(xPosTotal,yPosTotal + totalHeight);
+context.lineWidth = 1;
+context.strokeStyle = "black";
+context.stroke();
+
+//RIGHT
+context.beginPath();
+context.moveTo(xPosTotal + totalWidth, yPosTotal);
+context.lineTo(xPosTotal + totalWidth, yPosTotal + totalHeight);
+context.lineWidth = 1;
+context.strokeStyle = "black";
+context.stroke();
+}
+*/
+/**
+*  Canvas
+*/
+/*function preview(){
+
+context.clearRect(0, 0, canvas.width, canvas.height);
+
+if (!document.getElementById("xTotal").value || !document.getElementById("yTotal")  || !document.getElementById("widthTotal") || !document.getElementById("heightTotal") ){
+alert(" Bitte korrigieren Sie Ihre angaben  "); return;
+}
+
+var xTotal       = parseInt(document.getElementById("xTotal").value);
+var yTotal       = parseInt(document.getElementById("yTotal").value);
+var widthTotal   = parseInt(document.getElementById("widthTotal").value);
+var heightTotal  = parseInt(document.getElementById("heightTotal").value);
+
+var xDetail      = parseInt(document.getElementById("xDetail").value);
+var yDetail      = parseInt(document.getElementById("yDetail").value);
+var widthDetail  = parseInt(document.getElementById("widthDetail").value);
+var heightDetail = parseInt(document.getElementById("heightDetail").value);
+
+drawbackground(canvas, context, drawlines, xTotal, yTotal, widthTotal, heightTotal);
+}*/
+
+</script>
+
+<!--<div style="float:left; width:350px; height: 620px;">
+                <canvas id="myCanvas"  style="background-image:url('../images/V_Gesamt.png'); width:250px; height:630px"  />
+            </div>-->
+<!--<div style="float:left; border:solid; border-width: 1px; border-color:green; width:300px; height:500px;  >
+    <object
+        data='../coordinate.pdf#toolbar=1'
+        type='application/pdf'
+        width='100%'
+        height='600px'>
+    </object>
+</div>-->
